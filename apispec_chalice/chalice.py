@@ -31,9 +31,10 @@ Passing a view function::
 from apispec.compat import iteritems, iterkeys
 from apispec import Path
 from apispec.exceptions import APISpecError
-from apispec import utils
+from apispec.utils import load_operations_from_docstring
 
-def _route_for_view(current_app, view, path=None):
+
+def _route_for_view(current_app, view, path=Path()):
     view_funcs = current_app.routes
 
     for uri, endpoint in iteritems(view_funcs):
@@ -51,11 +52,11 @@ def _route_for_view(current_app, view, path=None):
     raise APISpecError('Could not find endpoint for view {0} and path {1}'.format(view, getattr(path, 'path', None)))
 
 
-def path_from_view(spec, app, view, path=None, **kwargs):
+def path_from_view(spec, app, view, **kwargs):
     """Path helper that allows passing a Chalice view function."""
-    uri, methods = _route_for_view(app, view, path=path)
+    uri, methods = _route_for_view(app, view, path=kwargs.get('path', Path()))
 
-    operations = utils.load_operations_from_docstring(view.__doc__)
+    operations = load_operations_from_docstring(view.__doc__)
     if not operations:
         operations = {}
 
