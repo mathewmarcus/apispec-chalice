@@ -34,17 +34,18 @@ from apispec.exceptions import APISpecError
 from apispec.utils import load_operations_from_docstring
 
 
-def _route_for_view(current_app, view, path=Path()):
+def _route_for_view(current_app, view, path=Path(), operations=set()):
     view_funcs = current_app.routes
 
     for uri, endpoint in iteritems(view_funcs):
         methods = set()
         for method, route_entry in iteritems(endpoint):
-            if route_entry.view_function == view:
+            method = method.lower()
+            if route_entry.view_function == view and (not operations or method in operations):
                 if path.path and not path.path == uri:
                     break
                 else:
-                    methods.add(method.lower())
+                    methods.add(method)
         else:
             if methods:
                 return uri, methods
@@ -54,8 +55,10 @@ def _route_for_view(current_app, view, path=Path()):
 
 def path_from_view(spec, app, view, **kwargs):
     """Path helper that allows passing a Chalice view function."""
-    uri, methods = _route_for_view(app, view, path=kwargs.get('path', Path()))
+    kwarg_ops = kwargs.get('operations')
+    kwarg_ops = set() if not kwarg_ops else set(kwarg_ops)
 
+    uri, methods = _route_for_view(app, view, path=kwargs.get('path', Path()), operations=kwarg_ops)
     operations = load_operations_from_docstring(view.__doc__)
     if not operations:
         operations = {}
