@@ -37,6 +37,24 @@ def test_wrong_path(app, spec):
         spec.add_path(app=app, view=gist_detail, path='/foo')
 
 
+def test_add_missing_op(app, spec):
+    @app.route('/gists/{gist_id}', methods=['GET'])
+    def gist_detail(gist_id):
+        '''
+        ---
+        get:
+            responses:
+                200:
+                    schema:
+                        $ref: '#/definitions/Gist'
+        '''
+        pass
+
+    
+    with pytest.raises(APISpecError):
+        spec.add_path(app=app, view=gist_detail, path='/foo', operations={'delete': {}})
+        
+
 def test_no_match_docstring_ops_route_methods(app, spec):
     @app.route('/gists/{gist_id}', methods=['GET'])
     def gist_detail(gist_id):

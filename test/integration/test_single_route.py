@@ -59,13 +59,11 @@ def test_single_route_no_docstring_no_path_ops(app, spec):
         pass
 
 
-    spec.add_path(app=app, view=gist_detail, operations={'delete': {}})
+    spec.add_path(app=app, view=gist_detail, operations={'get': {}})
 
     assert '/gists/{gist_id}' in spec._paths
     assert 'get' in spec._paths['/gists/{gist_id}']
-    assert 'delete' in spec._paths['/gists/{gist_id}']
     assert spec._paths['/gists/{gist_id}']['get'] == {}
-    assert spec._paths['/gists/{gist_id}']['delete'] == {}
 
 
 def test_single_route_docstring_path_no_ops(app, spec):
@@ -111,22 +109,18 @@ def test_single_route_docstring_no_path_ops(app, spec):
         pass
 
 
-    spec.add_path(app=app, view=gist_detail, operations={'delete': {}})
+    spec.add_path(app=app, view=gist_detail, operations={'get': {}})
 
     assert '/gists/{gist_id}' in spec._paths
     assert 'get' in spec._paths['/gists/{gist_id}']
-    assert 'delete' in spec._paths['/gists/{gist_id}']
-    assert spec._paths['/gists/{gist_id}'] == {
-        'get': {
-            'responses': {
-                200: {
-                    'schema': {
-                        '$ref': '#/definitions/Gist'
-                    }
+    assert spec._paths['/gists/{gist_id}']['get'] == {
+        'responses': {
+            200: {
+                'schema': {
+                    '$ref': '#/definitions/Gist'
                 }
             }
-        },
-        'delete': {}
+        }
     }
 
 
@@ -136,13 +130,11 @@ def test_single_route_no_docstring_path_ops(app, spec):
         pass
 
 
-    spec.add_path(app=app, view=gist_detail, operations={'delete': {}}, path='/gists/{gist_id}')
+    spec.add_path(app=app, view=gist_detail, operations={'get': {}}, path='/gists/{gist_id}')
 
     assert '/gists/{gist_id}' in spec._paths
     assert 'get' in spec._paths['/gists/{gist_id}']
-    assert 'delete' in spec._paths['/gists/{gist_id}']
     assert spec._paths['/gists/{gist_id}']['get'] == {}
-    assert spec._paths['/gists/{gist_id}']['delete'] == {}
 
 
 def test_single_route_docstring_path_ops(app, spec):
@@ -159,11 +151,10 @@ def test_single_route_docstring_path_ops(app, spec):
         pass
 
 
-    spec.add_path(app=app, view=gist_detail, operations={'delete': {}}, path='/gists/{gist_id}')
+    spec.add_path(app=app, view=gist_detail, operations={'get': {}}, path='/gists/{gist_id}')
 
     assert '/gists/{gist_id}' in spec._paths
     assert 'get' in spec._paths['/gists/{gist_id}']
-    assert 'delete' in spec._paths['/gists/{gist_id}']
     assert spec._paths['/gists/{gist_id}']['get'] == {
         'responses': {
             200: {
@@ -173,7 +164,6 @@ def test_single_route_docstring_path_ops(app, spec):
             }
         }
     }
-    assert spec._paths['/gists/{gist_id}']['delete'] == {}
 
 
 
