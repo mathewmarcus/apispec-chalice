@@ -15,6 +15,6 @@ def spec():
         title='Swagger Petstore',
         version='1.0.0',
         plugins=[
-            'apispec.ext.chalice',
+            'apispec_chalice',
         ],
     )
