@@ -4,7 +4,7 @@ import os.path
 
 setup(
     name="apispec-chalice",
-    version="0.1.0",
+    version="0.1.1",
     packages=['apispec_chalice'],
     description='Chalice for the apispec library',
     author='Mathew Marcus',
