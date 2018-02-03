@@ -52,7 +52,7 @@ Example RESTful Application
     app = Chalice(__name__)
 
     @app.route('/pets', methods=['GET', 'POST'])
-    def pets(gist_id):
+    def pets():
         '''
         ---
         get:
@@ -76,7 +76,7 @@ Example RESTful Application
         pass
 
     @app.route('/pets/{pet_name}', methods=['GET', 'PUT', 'DELETE'])
-    def pet(gist_id):
+    def pet(pet_name):
         '''
         ---
         get:
