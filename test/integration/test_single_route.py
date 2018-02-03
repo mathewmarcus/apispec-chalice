@@ -1,5 +1,5 @@
 def test_single_route_no_docstring_no_path_no_ops(app, spec):
-    @app.route('/gists/{gist_id}', methods=['GET'])
+    @app.route('/gists/{gist_id}')
     def gist_detail(gist_id):
         pass
 
