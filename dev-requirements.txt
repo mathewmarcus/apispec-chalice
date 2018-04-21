@@ -1,0 +1,6 @@
+apispec
+chalice
+marshmallow
+pytest
+funcsigs
+attrs
